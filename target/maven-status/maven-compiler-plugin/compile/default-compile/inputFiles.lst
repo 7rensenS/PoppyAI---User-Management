@@ -1,0 +1,8 @@
+E:\SpringBoot-WorkSpace\PoppyAI\user-management\src\main\java\com\example\usermanagement\config\SecurityConfig.java
+E:\SpringBoot-WorkSpace\PoppyAI\user-management\src\main\java\com\example\usermanagement\controller\AdminController.java
+E:\SpringBoot-WorkSpace\PoppyAI\user-management\src\main\java\com\example\usermanagement\controller\UserController.java
+E:\SpringBoot-WorkSpace\PoppyAI\user-management\src\main\java\com\example\usermanagement\exception\UserAlreadyExistsException.java
+E:\SpringBoot-WorkSpace\PoppyAI\user-management\src\main\java\com\example\usermanagement\model\User.java
+E:\SpringBoot-WorkSpace\PoppyAI\user-management\src\main\java\com\example\usermanagement\repository\UserRepository.java
+E:\SpringBoot-WorkSpace\PoppyAI\user-management\src\main\java\com\example\usermanagement\service\UserService.java
+E:\SpringBoot-WorkSpace\PoppyAI\user-management\src\main\java\com\example\usermanagement\UserManagementApplication.java

@@ -1,0 +1,5 @@
+# Created at 2025-02-03T18:33:17.557
+Boot Manifest-JAR contains absolute paths in classpath 'E:\SpringBoot-WorkSpace\PoppyAI\user-management\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+

@@ -12,18 +12,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.Customizer;
-import com.example.usermanagement.model.User; // Import your User class
-import com.example.usermanagement.repository.UserRepository; // Import your UserRepository
+import com.example.usermanagement.model.User;
+import com.example.usermanagement.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher; // Import this
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean  // Define the UserDetailsService bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) { // Inject UserRepository
+    @Bean
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -47,7 +48,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) { // Inject UserDetailsService
+    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -64,13 +65,15 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/api/users/register", "/api/users/validate").permitAll()
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/api/users/register", "/api/users/validate").permitAll() 
+                .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll() 
+                .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN") 
+                .requestMatchers("/h2-console/**").permitAll() 
                 .anyRequest().authenticated()
             )
-            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
-            .httpBasic(Customizer.withDefaults());
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // For H2 console
+            .httpBasic(Customizer.withDefaults()); 
 
         return http.build();
     }

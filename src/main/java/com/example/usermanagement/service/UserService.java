@@ -44,22 +44,39 @@ public class UserService {
 		return null; // Or throw an exception
 	}
 
-	// ... other methods (getAllUsers, deleteUser) ...
-
 	private String getIpAddress() {
 		try {
-			return restTemplate.getForObject("https://api.ipify.org?format=json", String.class);
+			JsonResponse jsonResponse = restTemplate.getForObject("https://api.ipify.org?format=json",
+					JsonResponse.class);
+			if (jsonResponse != null && jsonResponse.getIp() != null) {
+				return jsonResponse.getIp();
+			} else {
+				return "Could not fetch IP";
+			}
 		} catch (Exception e) {
-			return "Could not fetch IP Address";
+			e.printStackTrace();
+			return "Could not fetch IP";
 		}
 	}
 
 	private String getCountry(String ipAddress) {
 		try {
-			String apiUrl = "http://ip-api.com/#" + ipAddress;
-			return restTemplate.getForObject(apiUrl, String.class);
+			String apiUrl = "http://ip-api.com/json/" + ipAddress;
+			IpApiResponse response = restTemplate.getForObject(apiUrl, IpApiResponse.class);
+
+			if (response != null && "success".equals(response.getStatus())) {
+				return response.getCountry();
+			} else {
+
+				if (response != null && "fail".equals(response.getStatus())) {
+					return "Error: " + response.getMessage();
+				}
+				return "Error: Could not retrieve country information. Invalid IP or API issue.";
+			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error: An error occurred: " + e.getMessage());
 			return "Could not fetch Country";
 		}
 	}
